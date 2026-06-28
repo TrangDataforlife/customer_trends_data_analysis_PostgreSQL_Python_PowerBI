@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fashion Store NINI – Solution Proposal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --cream: #FAF7F2;
+    --ink: #1A1614;
+    --purple-deep: #3D2B6B;
+    --purple-mid: #6B4FA0;
+    --purple-light: #C5B4E3;
+    --purple-pale: #EDE6F7;
+    --teal: #2E9E8E;
+    --teal-light: #D0EDE9;
+    --amber: #F0A500;
+    --red-soft: #E8554E;
+    --red-pale: #FCEAE9;
+    --divider: #E2DADA;
+    --tag-bg: #F3EFF9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--purple-deep);
+    color: #fff;
+    padding: 56px 64px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.05);
+  }
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--purple-light);
+    margin-bottom: 14px;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    line-height: 1.15;
+    font-weight: 400;
+    max-width: 640px;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: var(--amber);
+  }
+  .header-sub {
+    margin-top: 16px;
+    color: rgba(255,255,255,.65);
+    font-size: 14px;
+    max-width: 580px;
+  }
+
+  /* ── JTBD BANNER ── */
+  .jtbd-block {
+    background: var(--purple-pale);
+    border-left: 4px solid var(--purple-mid);
+    margin: 40px 64px 0;
+    padding: 32px 40px;
+    border-radius: 0 12px 12px 0;
+  }
+  .jtbd-block h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--purple-deep);
+    margin-bottom: 16px;
+  }
+  .jtbd-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .jtbd-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 22px;
+    border: 1px solid var(--purple-light);
+  }
+  .jtbd-card .num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: var(--purple-mid);
+    line-height: 1;
+  }
+  .jtbd-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--purple-deep);
+    margin: 6px 0 4px;
+  }
+  .jtbd-card p { font-size: 13px; color: #555; }
+
+  /* ── SECTION WRAPPER ── */
+  .section {
+    padding: 48px 64px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--purple-mid);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--purple-deep);
+  }
+  .section-desc {
+    font-size: 14px;
+    color: #666;
+    margin-top: -18px;
+    margin-bottom: 28px;
+    max-width: 780px;
+    padding-left: 68px;
+  }
+
+  /* ── PROBLEM PILL ── */
+  .problem-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red-pale);
+    color: var(--red-soft);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    padding: 4px 12px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+  }
+
+  /* ── SOLUTION CARDS ── */
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .solution-grid.three { grid-template-columns: repeat(3, 1fr); }
+  .solution-grid.full  { grid-template-columns: 1fr; }
+
+  .sol-card {
+    background: #fff;
+    border: 1px solid var(--divider);
+    border-radius: 12px;
+    padding: 24px 26px;
+    transition: box-shadow .2s;
+  }
+  .sol-card:hover { box-shadow: 0 4px 20px rgba(61,43,107,.09); }
+
+  .sol-card .sol-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .tag-product  { background: #EDF7F6; color: #1E7A6E; }
+  .tag-cx       { background: #FFF4E0; color: #A06800; }
+  .tag-loyalty  { background: var(--tag-bg); color: var(--purple-deep); }
+  .tag-data     { background: #FCEAE9; color: #C0392B; }
+  .tag-ship     { background: #E8F4FD; color: #1A6FA8; }
+
+  .sol-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .sol-card p {
+    font-size: 13.5px;
+    color: #555;
+    margin-bottom: 12px;
+  }
+
+  .action-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .action-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: 13px;
+    color: #444;
+  }
+  .action-list li::before {
+    content: '→';
+    color: var(--teal);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .impact-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--divider);
+  }
+  .impact-chip {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 99px;
+    background: var(--purple-pale);
+    color: var(--purple-deep);
+  }
+  .impact-chip.high { background: #D4EFDC; color: #1A6E36; }
+  .impact-chip.med  { background: #FFF4E0; color: #A06800; }
+
+  /* ── HIGHLIGHT ROW ── */
+  .highlight-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    background: var(--purple-deep);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .hl-cell {
+    padding: 22px 24px;
+    border-right: 1px solid rgba(255,255,255,.1);
+  }
+  .hl-cell:last-child { border-right: none; }
+  .hl-cell .hl-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--amber);
+    line-height: 1;
+  }
+  .hl-cell .hl-label {
+    font-size: 12px;
+    color: rgba(255,255,255,.6);
+    margin-top: 4px;
+  }
+
+  /* ── PRIORITY TABLE ── */
+  .priority-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  .priority-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--purple-pale);
+    color: var(--purple-deep);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--purple-light);
+  }
+  .priority-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--divider);
+    color: #444;
+    vertical-align: top;
+  }
+  .priority-table tr:last-child td { border-bottom: none; }
+  .priority-table tr:hover td { background: var(--purple-pale); }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-high   { background: #D4EFDC; color: #1A6E36; }
+  .badge-med    { background: #FFF4E0; color: #A06800; }
+  .badge-low    { background: #F0F0F0; color: #666; }
+  .badge-q1     { background: var(--purple-pale); color: var(--purple-deep); }
+  .badge-q2     { background: var(--teal-light); color: #1E7A6E; }
+  .badge-q3     { background: #FFF0D0; color: #8C6200; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--ink);
+    color: rgba(255,255,255,.5);
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+  }
+  .footer strong { color: #fff; }
+
+  /* DIVIDER */
+  hr.soft { border: none; border-top: 1px solid var(--divider); margin: 28px 0; }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<div class="header">
+  <div class="header-eyebrow">Fashion Store NINI · Data-Driven Marketing · Solution Proposal</div>
+  <h1>Giữ chân khách hàng,<br><em>tăng revenue</em> bền vững</h1>
+  <p class="header-sub">Đề xuất giải pháp toàn diện nhằm khắc phục bad reviews, cải thiện loyalty program, tối ưu payment & shipping — dựa trên phân tích hành vi khách hàng của Fashion Store NINI.</p>
+</div>
+
+<!-- ══ JTBD ══ -->
+<div class="jtbd-block">
+  <h2>🎯 Job To Be Done — Tổng quan mục tiêu</h2>
+  <p style="font-size:14px;color:#444;max-width:780px;">Dựa trên dữ liệu phân tích, Fashion Store NINI cần giải quyết <strong>3 việc cốt lõi</strong> để phục hồi tăng trưởng: ngăn nhóm khách hàng trung niên (45–57) rời bỏ, giảm tỷ lệ bad review đang bào mòn uy tín sản phẩm, và biến discount đang được dùng tuỳ tiện thành công cụ giữ chân có chiến lược.</p>
+  <div class="jtbd-grid">
+    <div class="jtbd-card">
+      <div class="num">20.6%</div>
+      <div class="label">Bad review — Middle-aged</div>
+      <p>Nhóm thành viên đông nhất nhưng có tỷ lệ đánh giá xấu cao nhất — ưu tiên xử lý ngay.</p>
+    </div>
+    <div class="jtbd-card">
+      <div class="num">403</div>
+      <div class="label">KH Hibernating/Lost</div>
+      <p>~10% tổng khách hàng đã ngừng mua. Tập trung win-back trước khi mất hoàn toàn.</p>
+    </div>
+    <div class="jtbd-card">
+      <div class="num">57.3%</div>
+      <div class="label">Doanh thu từ non-member</div>
+      <p>Chương trình membership chưa đủ hấp dẫn để chuyển đổi khách hàng thường xuyên.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 1 — BAD REVIEWS: SẢN PHẨM ══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">01 — Bad Reviews</span>
+    <h2>Giải quyết vấn đề chất lượng sản phẩm</h2>
+  </div>
+  <div class="section-desc">Clothing chiếm 104K doanh thu nhưng có bad review 18.5%, tập trung ở size XL & M và nổi lên mạnh vào Fall, Spring, Summer.</div>
+
+  <div class="highlight-row">
+    <div class="hl-cell"><div class="hl-num">18.5%</div><div class="hl-label">Bad review Clothing</div></div>
+    <div class="hl-cell"><div class="hl-num">XL & M</div><div class="hl-label">Size có bad review cao nhất</div></div>
+    <div class="hl-cell"><div class="hl-num">19.1%</div><div class="hl-label">Bad review Outerwear</div></div>
+    <div class="hl-cell"><div class="hl-num">Shirt 23.1%</div><div class="hl-label">Top 1 sản phẩm bad review</div></div>
+  </div>
+
+  <div class="solution-grid">
+    <div class="sol-card">
+      <span class="sol-tag tag-product">Size & Fit</span>
+      <h3>Cải thiện size chart & mô tả sản phẩm</h3>
+      <p>XL và M là hai size bán chạy nhưng lại có bad review cao nhất — nguyên nhân chính là kỳ vọng về size không khớp thực tế sản phẩm.</p>
+      <ul class="action-list">
+        <li>Thêm size chart chi tiết (cm) kèm hướng dẫn đo và model reference cho từng sản phẩm Clothing</li>
+        <li>Tích hợp tính năng "Fit Finder" gợi ý size dựa trên chiều cao/cân nặng/review của người mua trước</li>
+        <li>Gắn tag cảnh báo "runs small/large" tự động dựa trên dữ liệu review thực tế</li>
+        <li>Ưu tiên review có hình ảnh từ khách hàng thật lên đầu trang sản phẩm</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip high">Impact cao</span>
+        <span class="impact-chip">Giảm return rate</span>
+        <span class="impact-chip">Cải thiện CX online</span>
+      </div>
+    </div>
+
+    <div class="sol-card">
+      <span class="sol-tag tag-product">Màu sắc & Mô tả</span>
+      <h3>Chuẩn hóa hiển thị màu & content sản phẩm</h3>
+      <p>Nhiều màu XL (Red, Silver, White, Pink, Cyan) có bad review tới 50% — cho thấy màu thực tế lệch xa hình ảnh trực tuyến.</p>
+      <ul class="action-list">
+        <li>Chuẩn hóa nhiếp ảnh sản phẩm với ánh sáng nhất quán, thêm ảnh chi tiết màu trên từng chất liệu</li>
+        <li>Disclaimer "màu có thể chênh nhẹ tùy màn hình" kèm ảnh thực chụp từ nhiều góc</li>
+        <li>Ưu tiên kiểm tra lại QC cho các màu: Red, Silver, White, Pink, Cyan ở XL và Yellow, Cyan ở M</li>
+        <li>Bổ sung video ngắn sản phẩm để khách hàng thấy màu thực tế trước khi mua</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip high">Impact cao</span>
+        <span class="impact-chip">Giảm sai kỳ vọng</span>
+      </div>
+    </div>
+
+    <div class="sol-card">
+      <span class="sol-tag tag-product">Seasonal Planning</span>
+      <h3>Lên kế hoạch sản phẩm theo mùa chủ động</h3>
+      <p>Clothing bad review tập trung ở Fall & Spring (peak mùa cao điểm). Cần kiểm soát chất lượng trước mùa, không chờ complaint.</p>
+      <ul class="action-list">
+        <li>Chạy pre-season QC audit cho Clothing XL/M trước mỗi đợt Spring & Fall</li>
+        <li>Mở pre-order giới hạn để test nhu cầu và phát hiện vấn đề trước khi nhập số lượng lớn</li>
+        <li>Review lại danh mục Shirt, Jeans, Coat (top 3 bad review) — xem xét đổi nhà cung cấp hoặc cải thiện spec kỹ thuật</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip med">Impact trung bình</span>
+        <span class="impact-chip">Proactive vs Reactive</span>
+      </div>
+    </div>
+
+    <div class="sol-card">
+      <span class="sol-tag tag-cx">Sau mua hàng</span>
+      <h3>Chương trình thu thập & phản hồi review nhanh</h3>
+      <p>Cần vòng phản hồi nhanh hơn để phát hiện vấn đề sớm và cho khách hàng thấy store thực sự lắng nghe.</p>
+      <ul class="action-list">
+        <li>Email tự động sau 3 ngày nhận hàng: hỏi nhanh về fit & màu sắc (2 câu)</li>
+        <li>Với review 1–2 sao: trigger CS reach-out ngay trong 24h, đề nghị đổi/trả hoặc voucher bù đắp</li>
+        <li>Dashboard nội bộ theo dõi bad review theo size × màu × mùa theo tuần để xử lý kịp thời</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip high">Impact cao</span>
+        <span class="impact-chip">Retention signal</span>
+        <span class="impact-chip">Brand trust</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 2 — SHIPPING ══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">02 — Shipping</span>
+    <h2>Cải thiện trải nghiệm vận chuyển</h2>
+  </div>
+  <div class="section-desc">Store Pickup (21.2%), Next Day Air (18.8%), Express (16.7%) là top 3 shipping có bad review cao nhất. Middle-aged consistently dẫn đầu bad review ở mọi shipping type.</div>
+
+  <div class="solution-grid three">
+    <div class="sol-card">
+      <span class="sol-tag tag-ship">Store Pickup — 21.2%</span>
+      <h3>Nâng cấp trải nghiệm nhận tại cửa hàng</h3>
+      <p>Senior (26.6%) và Adult (25.2%) có bad review cao nhất với Store Pickup — gợi ý vấn đề tại điểm phục vụ thực tế.</p>
+      <ul class="action-list">
+        <li>Cải thiện quy trình: thông báo "sẵn sàng nhận hàng" rõ ràng, giảm thời gian chờ tại quầy</li>
+        <li>Thêm voucher ưu đãi dành riêng cho Store Pickup để khuyến khích và bù đắp trải nghiệm</li>
+        <li>Đào tạo lại nhân viên tại điểm nhận hàng về customer service cho nhóm khách lớn tuổi</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip high">Ưu tiên cao</span>
+      </div>
+    </div>
+
+    <div class="sol-card">
+      <span class="sol-tag tag-ship">Next Day Air — 18.8%</span>
+      <h3>Quản lý kỳ vọng giao hàng nhanh</h3>
+      <p>Middle-aged (24.6%) cao nhất — khách chọn Next Day Air nhưng không nhận được đúng kỳ vọng về thời gian.</p>
+      <ul class="action-list">
+        <li>Hiển thị rõ giờ cut-off đặt hàng để đảm bảo Next Day Air (ví dụ: "Đặt trước 14:00 để nhận ngày mai")</li>
+        <li>Gửi tracking update real-time và thông báo chủ động nếu có delay</li>
+        <li>Cam kết hoàn phí ship nếu trễ hơn cam kết — tạo accountability</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip med">Ưu tiên trung bình</span>
+      </div>
+    </div>
+
+    <div class="sol-card">
+      <span class="sol-tag tag-ship">Express — 16.7%</span>
+      <h3>Tối ưu đơn vị vận chuyển Express theo địa bàn</h3>
+      <p>Connecticut (54.5%), Massachusetts (50%), Nebraska (37.5%) là các bang có tỷ lệ Express bad review cao nhất.</p>
+      <ul class="action-list">
+        <li>Đánh giá lại đối tác vận chuyển Express tại các khu vực bad review > 30%</li>
+        <li>Xem xét routing bổ sung hoặc đổi nhà vận chuyển tại các bang high-risk</li>
+        <li>Temporary: ẩn hoặc giới hạn lựa chọn Express tại địa bàn có tỷ lệ lỗi cao trong khi xử lý</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip med">Ưu tiên trung bình</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 3 — PAYMENT ══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">03 — Payment</span>
+    <h2>Cải thiện trải nghiệm thanh toán</h2>
+  </div>
+  <div class="section-desc">Bank Transfer (19.1%), Cash (18.1%), Debit Card (17.5%) là top 3 payment có bad review cao. Cả 3 đều có Middle-aged dẫn đầu bad review — phản ánh vấn đề UX thanh toán với nhóm này.</div>
+
+  <div class="solution-grid">
+    <div class="sol-card">
+      <span class="sol-tag tag-cx">Bank Transfer & Cash</span>
+      <h3>Đơn giản hóa quy trình thanh toán truyền thống</h3>
+      <p>Middle-aged ưa dùng Bank Transfer (23.7% bad) và Cash (22.1% bad) — các phương thức này phức tạp về quy trình với người dùng không tech-savvy.</p>
+      <ul class="action-list">
+        <li>Với Bank Transfer: cải thiện UI confirmation, gửi email xác nhận thanh toán ngay tức thì kèm order summary rõ ràng</li>
+        <li>Với Cash (COD): cải thiện thông báo thời điểm giao hàng, giảm trường hợp khách vắng nhà</li>
+        <li>Thêm hướng dẫn step-by-step visual cho từng phương thức thanh toán trên trang checkout</li>
+        <li>Xem xét thêm QR payment đơn giản thay thế Bank Transfer để giảm ma sát</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip high">Impact cao — Middle-aged</span>
+      </div>
+    </div>
+
+    <div class="sol-card">
+      <span class="sol-tag tag-cx">Debit Card</span>
+      <h3>Xử lý lỗi kỹ thuật & phí ẩn trong thanh toán thẻ</h3>
+      <p>Debit Card bad review phân bổ đều ở Adult (19.6%) và Young Adult (19.6%) — gợi ý vấn đề kỹ thuật hơn là UX.</p>
+      <ul class="action-list">
+        <li>Audit các lỗi transaction failed, declined card phổ biến — fix trước khi mùa cao điểm</li>
+        <li>Hiển thị rõ phí xử lý (nếu có) trước khi checkout — tránh hidden cost gây bức xúc</li>
+        <li>Thêm fallback payment option ngay trên trang nếu Debit Card bị từ chối</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip med">Impact trung bình</span>
+        <span class="impact-chip">Tech fix priority</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 4 — LOYALTY PROGRAM ══ -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">04 — Loyalty Program</span>
+    <h2>Tái thiết kế chương trình thành viên & discount</h2>
+  </div>
+  <div class="section-desc">57.3% doanh thu đến từ non-member. At Risk (36.6%) và Can't Lose (31.3%) là hai segment thành viên quan trọng đang có dấu hiệu rời bỏ. Voucher hiện tại đang phục vụ sai đối tượng.</div>
+
+  <div class="solution-grid">
+    <div class="sol-card">
+      <span class="sol-tag tag-loyalty">Membership Tier</span>
+      <h3>Redesign tier membership rõ ràng & hấp dẫn</h3>
+      <p>Tier membership hiện không rõ ràng và không đủ hấp dẫn để thuyết phục khách hàng thường xuyên đăng ký.</p>
+      <ul class="action-list">
+        <li>Xây dựng 3 tier rõ ràng: Silver → Gold → Platinum với quyền lợi tăng dần và dễ hiểu</li>
+        <li>Benefit không chỉ là discount: ưu tiên hoàn trả nhanh, early access sản phẩm mới, free shipping threshold thấp hơn</li>
+        <li>Hiển thị progress bar "Bạn cần X điểm để lên hạng Gold" ngay sau mỗi đơn hàng</li>
+        <li>Campaign đặc biệt cho nhóm middle-aged: quyền lợi gắn với Store Pickup và hỗ trợ offline</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip high">Impact cao</span>
+        <span class="impact-chip">Long-term retention</span>
+      </div>
+    </div>
+
+    <div class="sol-card">
+      <span class="sol-tag tag-loyalty">Discount Strategy</span>
+      <h3>Voucher đúng người — đúng thời điểm — đúng sản phẩm</h3>
+      <p>Hiện voucher đang được dùng nhiều bởi non-member và người có lịch sử mua thấp — sai mục tiêu giữ chân khách trung thành.</p>
+      <ul class="action-list">
+        <li><strong>Ngừng</strong> phát voucher đại trà cho cherry-pickers; chuyển sang exclusive voucher cho member từ Silver trở lên</li>
+        <li>Voucher theo category: tập trung vào Clothing & Accessories (high revenue) thay vì low-value old stock</li>
+        <li>Voucher theo thời điểm: gửi vào tuần 10–11 của quý (trước chu kỳ mua 3 tháng của target group)</li>
+        <li>Cá nhân hóa email marketing: voucher dựa trên lịch sử mua (size, màu, category ưa thích)</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip high">Impact cao</span>
+        <span class="impact-chip">Tối ưu chi phí promo</span>
+      </div>
+    </div>
+
+    <div class="sol-card">
+      <span class="sol-tag tag-loyalty">Win-back Campaign</span>
+      <h3>Chiến dịch tái kích hoạt At Risk & Can't Lose</h3>
+      <p>At Risk (36.6% member) và Can't Lose (31.3% member) đang chi nhiều nhưng đã lâu không mua — đây là nhóm có ROI tái kích hoạt cao nhất.</p>
+      <ul class="action-list">
+        <li>Segment riêng At Risk: email "Chúng tôi nhớ bạn" + voucher cá nhân hoá dựa trên lần mua cuối</li>
+        <li>Segment Can't Lose: offer đặc biệt "VIP comeback" kèm free upgrade shipping cho đơn đầu tiên trở lại</li>
+        <li>Trigger tự động: nếu member không mua sau 60 ngày → CS outreach proactive (email hoặc SMS)</li>
+        <li>Tracking riêng: đo win-back rate theo tháng để đánh giá hiệu quả chiến dịch</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip high">Impact cao — Revenue ngay</span>
+      </div>
+    </div>
+
+    <div class="sol-card">
+      <span class="sol-tag tag-loyalty">Membership Acquisition</span>
+      <h3>Chuyển đổi non-member thường xuyên thành member</h3>
+      <p>Non-member chiếm >70% ở cả Bi-Weekly và Weekly shopper — những người này xứng đáng là loyalty customer nhưng chưa thấy lý do để đăng ký.</p>
+      <ul class="action-list">
+        <li>Popup sau lần mua thứ 2: "Bạn đã mua 2 lần — tham gia thành viên để tiết kiệm ngay hôm nay"</li>
+        <li>Referral program: thành viên giới thiệu thành công nhận điểm thưởng, người được giới thiệu nhận voucher chào mừng</li>
+        <li>Thêm benefit Store Pickup exclusive cho member — giải quyết gap hiện tại là Store Pickup đang thiếu voucher</li>
+      </ul>
+      <div class="impact-row">
+        <span class="impact-chip high">Impact cao</span>
+        <span class="impact-chip">Mở rộng member base</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 5 — PRIORITY ROADMAP ══ -->
+<div class="section" style="border-bottom:none;">
+  <div class="section-header">
+    <span class="section-num">05 — Roadmap</span>
+    <h2>Ưu tiên triển khai theo quý</h2>
+  </div>
+  <div class="section-desc">Sắp xếp theo mức độ tác động (Impact) và khả năng triển khai nhanh (Feasibility).</div>
+
+  <table class="priority-table">
+    <thead>
+      <tr>
+        <th>Giải pháp</th>
+        <th>Mục tiêu chính</th>
+        <th>Impact</th>
+        <th>Timeline</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Fix size chart & mô tả sản phẩm Clothing</strong></td>
+        <td>Giảm bad review, giảm return</td>
+        <td><span class="badge badge-high">Cao</span></td>
+        <td><span class="badge badge-q1">Q1</span></td>
+      </tr>
+      <tr>
+        <td><strong>CS auto-trigger với 1–2 star review trong 24h</strong></td>
+        <td>Customer retention ngay lập tức</td>
+        <td><span class="badge badge-high">Cao</span></td>
+        <td><span class="badge badge-q1">Q1</span></td>
+      </tr>
+      <tr>
+        <td><strong>Win-back campaign At Risk & Can't Lose</strong></td>
+        <td>Phục hồi doanh thu từ member đang rời</td>
+        <td><span class="badge badge-high">Cao</span></td>
+        <td><span class="badge badge-q1">Q1</span></td>
+      </tr>
+      <tr>
+        <td><strong>Redesign voucher strategy — đúng người, đúng lúc</strong></td>
+        <td>Tối ưu chi phí promo, tăng loyalty ROI</td>
+        <td><span class="badge badge-high">Cao</span></td>
+        <td><span class="badge badge-q1">Q1</span></td>
+      </tr>
+      <tr>
+        <td><strong>Cải thiện Store Pickup experience & voucher</strong></td>
+        <td>Giảm bad review shipping</td>
+        <td><span class="badge badge-high">Cao</span></td>
+        <td><span class="badge badge-q2">Q2</span></td>
+      </tr>
+      <tr>
+        <td><strong>Redesign membership tier (Silver/Gold/Platinum)</strong></td>
+        <td>Tăng membership sign-up, giữ chân dài hạn</td>
+        <td><span class="badge badge-high">Cao</span></td>
+        <td><span class="badge badge-q2">Q2</span></td>
+      </tr>
+      <tr>
+        <td><strong>Non-member conversion popup sau lần mua thứ 2</strong></td>
+        <td>Mở rộng member base</td>
+        <td><span class="badge badge-med">Trung bình</span></td>
+        <td><span class="badge badge-q2">Q2</span></td>
+      </tr>
+      <tr>
+        <td><strong>Pre-season QC audit Clothing XL/M trước Spring & Fall</strong></td>
+        <td>Proactive giảm bad review theo mùa</td>
+        <td><span class="badge badge-med">Trung bình</span></td>
+        <td><span class="badge badge-q2">Q2</span></td>
+      </tr>
+      <tr>
+        <td><strong>Cải thiện Bank Transfer & Cash checkout UX</strong></td>
+        <td>Giảm bad review payment — middle-aged</td>
+        <td><span class="badge badge-med">Trung bình</span></td>
+        <td><span class="badge badge-q3">Q3</span></td>
+      </tr>
+      <tr>
+        <td><strong>Audit đối tác Express tại bang có bad review > 30%</strong></td>
+        <td>Giảm bad review shipping Express</td>
+        <td><span class="badge badge-med">Trung bình</span></td>
+        <td><span class="badge badge-q3">Q3</span></td>
+      </tr>
+      <tr>
+        <td><strong>Personalized email marketing theo purchase history</strong></td>
+        <td>Tăng repeat purchase, cá nhân hóa trải nghiệm</td>
+        <td><span class="badge badge-med">Trung bình</span></td>
+        <td><span class="badge badge-q3">Q3</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  <strong>Fashion Store NINI — Data-Driven Marketing Solution Proposal</strong> · Phân tích bởi Nguyễn Hà Phương Trang · Đề xuất giải pháp tổng hợp từ Customer Behaviour Data
+</div>
+
+</body>
+</html>
